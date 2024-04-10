@@ -282,13 +282,18 @@ class SamAutomaticMaskGenerator:
             multimask_output=True,
             return_logits=True,
         )
-
-        # Serialize predictions and store in MaskData
         data = MaskData(
-            masks=masks.flatten(0, 1),
-            iou_preds=iou_preds.flatten(0, 1),
-            points=torch.as_tensor(points.repeat(masks.shape[1], axis=0)),
+            masks=masks[:,2,:,:],
+            iou_preds=iou_preds[:,2],
+            points=torch.as_tensor(points),
         )
+
+        # # Serialize predictions and store in MaskData
+        # data = MaskData(
+        #     masks=masks.flatten(0, 1),
+        #     iou_preds=iou_preds.flatten(0, 1),
+        #     points=torch.as_tensor(points.repeat(masks.shape[1], axis=0)),
+        # )
         del masks
 
         # Filter by predicted IoU
